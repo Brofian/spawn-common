@@ -1,0 +1,17 @@
+{
+  "name": "spawn/common",
+  "description": "S.P.A.W.N. Common Module",
+  "license": "proprietary",
+
+  "authors": [
+    {
+      "name": "Fabian Holzwarth"
+    }
+  ],
+
+  "autoload": {
+    "psr-4" : {
+      "SpawnCommon\\" : "src"
+    }
+  }
+}

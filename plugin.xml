@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<plugin>
+
+    <resources>
+        <namespace>SpawnCommon</namespace>
+        <weight>1</weight>
+    </resources>
+
+    <info>
+        <author>Fabian Holzwarth</author>
+        <version>0.0.1</version>
+    </info>
+
+    <services>
+
+    </services>
+
+</plugin>
