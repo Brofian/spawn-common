@@ -1,0 +1,54 @@
+<!doctype html>
+{% block html %}
+    <html lang="en">
+        {% block html_inner %}
+
+            {% block head %}
+                <head>
+                    {% block head_meta %}
+
+                        {% block meta_charset %}
+                            <meta charset="UTF-8">
+                        {% endblock %}
+
+                        {% block meta_viewport %}
+                            <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                        {% endblock %}
+
+                        {% block meta_x_ua_compatible %}
+                            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                        {% endblock %}
+
+                        {% block meta_title %}
+                            <title>S.P.A.W.N. Backend</title>
+                        {% endblock %}
+
+                        {% block meta_favicon %}
+                            <link rel="icon" type="image/svg+xml" href="{{ cache('SpawnCommon') }}assets/icons/icon_spawn.svg">
+                        {% endblock %}
+
+                        {% block meta_javascript %}
+                            <script src="{{ cache('SpawnCommon') }}js/index.js"></script>
+                        {% endblock %}
+
+                        {% block meta_css %}
+                            <link rel="stylesheet" type="text/css" href="{{ cache('SpawnCommon') }}css/all{% if environment == 'dev' %}.min{% endif %}.css">
+                        {% endblock %}
+
+                        {% block meta_robots %}
+                            <meta name="robots" content="noindex,nofollow"/>
+                        {% endblock %}
+
+                    {% endblock %}
+                </head>
+            {% endblock %}
+
+            {% block body %}
+                <body>
+                    {% block body_inner %}{% endblock %}
+                </body>
+            {% endblock %}
+
+        {% endblock %}
+    </html>
+{% endblock %}

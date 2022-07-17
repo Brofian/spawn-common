@@ -1,0 +1,33 @@
+$bp-sm: 480px;
+$bp-md: 786px;
+$bp-lg: 1024px;
+$bp-xl: 1200px;
+
+$breakpointList: (
+		"sm": $bp-sm,
+		"md": $bp-md,
+		"lg": $bp-lg,
+		"xl": $bp-xl
+);
+
+@mixin breakpoint-up($bp, $bpList: $breakpointList) {
+	$breakpoint: map-get($bpList, $bp);
+	@media screen and (min-width: #{$breakpoint}) {
+		@content;
+	}
+}
+
+@mixin breakpoint-down($bp, $bpList: $breakpointList) {
+	$breakpoint: map-get($bpList, $bp);
+	@media screen and (max-width: #{$breakpoint}) {
+		@content;
+	}
+}
+
+@mixin breakpoint-between($bp-min, $bp-max, $bpList: $breakpointList) {
+	$breakpoint-min: map-get($bpList, $bp-min);
+	$breakpoint-max: map-get($bpList, $bp-max);
+	@media screen and (min-width: #{$breakpoint-min}) and (max-width: #{$breakpoint-max}) {
+		@content;
+	}
+}

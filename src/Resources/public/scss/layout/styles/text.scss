@@ -1,0 +1,26 @@
+.italic {
+	font-style: italic;
+}
+
+.bold {
+	font-weight: $font-weight-bold;
+}
+
+.underscore {
+	text-decoration: underline;
+}
+
+.small {
+	font-size: 0.65em;
+	padding-top: 0.35em;
+}
+
+.no-flex {
+	flex: none;
+}
+
+@each $align in (center,left,right) {
+	.text-align-#{$align} {
+		text-align: #{$align};
+	}
+}

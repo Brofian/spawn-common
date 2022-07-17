@@ -1,0 +1,20 @@
+$font-path: '#{$asset-path}/assets/fonts/hind_siliguri';
+$font-family-hind-siliguri: 'hind_siliguri';
+
+@font-face {
+	font-family: $font-family-hind-siliguri;
+	font-weight: 400;
+	src: local($font-family-hind-siliguri), url("#{$font-path}/HindSiliguri-Regular.woff2") format('woff2');
+	font-style: normal;
+	font-display: swap;
+	unicode-range: U+000-5FF;
+}
+
+@font-face {
+	font-family: $font-family-hind-siliguri;
+	font-weight: 600;
+	src: local($font-family-hind-siliguri), url("#{$font-path}/HindSiliguri-Bold.woff2") format('woff2');
+	font-style: normal;
+	font-display: swap;
+	unicode-range: U+000-5FF;
+}

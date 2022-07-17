@@ -1,0 +1,14 @@
+$prefixList: (
+		'firefox': '-moz-',
+		'webkit': '-webkit-',
+		'ie': '-ms-',
+		'o': '-o-'
+);
+
+@mixin prefix($property, $value, $prefixes: $prefixList) {
+	@each $browser, $prefix in $prefixes {
+		#{$prefix + $property}: $value;
+	}
+
+	#{$property}: $value;
+}

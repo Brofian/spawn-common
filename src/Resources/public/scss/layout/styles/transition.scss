@@ -1,0 +1,58 @@
+.no-transition {
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
+	-ms-transition: none !important;
+	-o-transition: none !important;
+	transition: none !important;
+}
+
+$possibilities: (
+	'all',
+	'color',
+	'background-color',
+	'width',
+	'height',
+	'max-width',
+	'max-height',
+	'min-width',
+	'min-height',
+	'top',
+	'left',
+	'right',
+	'bottom',
+	'opacity'
+);
+
+$durations: (
+	'brief': 0.1s,
+	'short': 0.2s,
+	'medium': 0.3s,
+	'regular': 0.5s,
+	'long': 1s,
+);
+
+$timings: (
+	'l': linear,
+	'e': ease,
+	'ei': ease-in,
+	'eo': ease-out,
+	'eio': ease-in-out,
+);
+
+@each $breakpoint, $size in $breakpointList {
+	@include breakpoint-up($breakpoint) {
+		@each $timingName, $time in $timings {
+			@each $durationName, $duration in $durations {
+				@each $property in $possibilities {
+					.transition-#{$property}-#{$timingName} {
+						transition-property: #{$property};
+						transition-duration: #{$duration};
+						transition-timing-function: #{$time};
+					}
+				}
+			}
+		}
+	}
+}
+
+
