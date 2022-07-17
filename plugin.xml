@@ -4,6 +4,7 @@
 
     <resources>
         <namespace>SpawnCommon</namespace>
+        <path>/src/Resources</path>
         <weight>1</weight>
     </resources>
 
