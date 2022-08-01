@@ -12,7 +12,7 @@ export default class FlashHintFunction {
         let flashHint = FlashHintFunction.__createFlashHintElement(type, text);
 
         //remove flashAfterLifetime (plus fadeout time of 25%)
-        window.setTimeout(FlashHintFunction.__removeFlashHint.bind(null, flashHint), lifetime*fadeOutTime);
+        window.setTimeout(FlashHintFunction.__removeFlashHint.bind(null, flashHint), lifetime+fadeOutTime);
 
         //search or create flash Container and append new item
         let flashContainer = FlashHintFunction.__getContainer();
