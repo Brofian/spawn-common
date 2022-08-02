@@ -1,8 +1,10 @@
 // Abstract stuff (should be first)
+@import "abstract/variables"; // keep this on top
 @import "abstract/colors";
 @import "abstract/fonts";
 @import "abstract/defaults";
 @import "abstract/mixins";
+@import "abstract/global";
 
 // Layout related stuff
 @import "layout/styles";
