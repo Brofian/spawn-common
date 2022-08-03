@@ -1,0 +1,56 @@
+table.table-listing {
+	width: 100%;
+	border-collapse: collapse;
+	position: relative;
+
+	thead {
+		background-color: $gray-100;
+		position: sticky;
+		top: 0;
+		z-index: 1;
+
+		&.sticking {
+			box-shadow: 0 3px 4px -1px $gray-100;
+		}
+
+		th {
+			padding: 0.5rem;
+			text-align: left;
+
+			&.row-selection-column {
+				text-align: center;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			background-color: $gray-300;
+
+			&:nth-of-type(2n) {
+				background-color: $gray-350;
+			}
+
+			&:hover {
+				background-color: $gray-400;
+			}
+
+			td {
+				padding: 0.5rem;
+				text-align: left;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+
+				&[data-data-type=text] {
+					max-width: 20rem;
+				}
+
+				&.row-selection-column {
+					text-align: center;
+				}
+			}
+		}
+	}
+
+}

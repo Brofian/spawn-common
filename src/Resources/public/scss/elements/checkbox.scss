@@ -1,0 +1,44 @@
+input[type=checkbox] {
+	display: none;
+
+	& + label {
+		width: 1.2em;
+		height: 1.2em;
+		display: inline-block;
+		background: $white;
+		margin-bottom: -0.3em;
+		cursor: pointer;
+		//border-radius: 3px;
+		overflow: hidden;
+		position: relative;
+
+		&::before {
+			content: "";
+			width: 1.2em;
+			height: 1.2em;
+			max-width: 0;
+			max-height: 0;
+			background-color: $aqua;
+			display: inline-block;
+			transform: translate(-50%,-50%);
+			transition: max-width 0.2s ease-in-out,
+						max-height 0.2s ease-in-out;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			background-image: url("#{$SpawnCommonCachePath}/assets/icons/check-mark-icon.svg");
+			background-position: center;
+			background-size: 60%;
+			background-repeat: no-repeat;
+		}
+	}
+
+	&:checked + label::before {
+		max-width: 1.2em;
+		max-height: 1.2em;
+	}
+
+	&:disabled + label {
+		filter: grayscale(1);
+	}
+}

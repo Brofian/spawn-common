@@ -1,25 +1,30 @@
 {% block table %}
-    <table id="tableListing">
+    <table class="table-listing js-scalable">
 
         {% if configuration.tableHeaders %}
             {% block table_header %}
                 <thead>
+                    <tr>
 
-                    {% block table_header_row_selection %}
-                        {% if configuration.showRowSelection %}
-                            <th class="row-selection-column">
-                                {% set randId = "row_select_"~random(0,99999999) %}
-                                <input type="checkbox" class="toggleAllRows" id="{{ randId }}"/>
-                                <label for="{{ randId }}"></label>
-                            </th>
-                        {% endif %}
-                    {% endblock %}
-
-                    {% for headerName in configuration.tableHeaders %}
-                        {% block table_header_column %}
-                            <th>{{ headerName }}</th>
+                        {% block table_header_row_selection %}
+                            {% if configuration.showRowSelection %}
+                                <th class="row-selection-column">
+                                    {% set randId = "row_select_"~random(0,99999999) %}
+                                    <input type="checkbox" class="toggleAllRows" id="{{ randId }}"/>
+                                    <label for="{{ randId }}"></label>
+                                </th>
+                            {% endif %}
                         {% endblock %}
-                    {% endfor %}
+
+                        {% set colIndex = 0 %}
+                        {% for headerName in configuration.tableHeaders %}
+                            {% block table_header_column %}
+                                <th data-data-type="{{ configuration.columnTypes[colIndex] }}">{{ headerName }}</th>
+                            {% endblock %}
+                            {% set colIndex = colIndex + 1 %}
+                        {% endfor %}
+
+                    </tr>
                 </thead>
             {% endblock %}
         {% endif %}
@@ -45,10 +50,9 @@
                                 {% endif %}
                             {% endblock %}
 
-
                             {% set colIndex = 0 %}
                             {% for data in rowData %}
-                                <td>
+                                <td data-data-type="{{ configuration.columnTypes[colIndex] }}">
                                 {% block table_body_column %}
 
                                     {% if configuration.columnTypes[colIndex] == 'datetime' %}
