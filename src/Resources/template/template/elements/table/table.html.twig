@@ -1,5 +1,15 @@
 {% block table %}
-    <table class="table-listing js-scalable">
+    <table class="table-listing js-scalable"
+        {% if configuration.pagination.itemsPerPage %}
+            data-items-per-page="{{ configuration.pagination.itemsPerPage }}"
+        {% endif %}
+        {% if configuration.pagination.currentPage %}
+            data-current-page="{{ configuration.pagination.currentPage }}"
+        {% endif %}
+        {% if configuration.pagination.hide %}
+            data-use-pagination="0"
+        {% endif %}
+    >
 
         {% if configuration.tableHeaders %}
             {% block table_header %}
@@ -58,9 +68,9 @@
                                     {% if configuration.columnTypes[colIndex] == 'datetime' %}
                                         <span>{{ data|date(constant('SpawnCore\\Defaults\\Defaults::DATE_TIME_STORAGE_FORMAT')) }}</span>
                                     {% elseif configuration.columnTypes[colIndex] == 'bool' %}
-                                        <label>
-                                            <input type="checkbox" name="" {% if data %}checked="checked"{% endif %}/>
-                                        </label>
+                                        {% set randId = "row_select_"~random(0,99999999) %}
+                                        <input type="checkbox" id="{{ randId }}" {% if data %}checked="checked"{% endif %}/>
+                                        <label for="{{ randId }}"></label>
                                     {% else %}
                                         <span>{{ data|default('/') }}</span>
                                     {% endif %}
@@ -77,6 +87,15 @@
                 {% endblock %}
             </tbody>
         {% endblock %}
-
     </table>
+
+    {% block table_pagination_container %}
+        {% if not configuration.pagination.hide %}
+            {% include "template/elements/table/pagination.html.twig" with {
+                availablePages: ((configuration.tableRows|length) / (configuration.itemsPerPage|default(10)))|round(0,'ceil'),
+                currentPage: configuration.itemsPerPage|default(1)
+            } only %}
+        {% endif %}
+    {% endblock %}
 {% endblock %}
+

@@ -1,0 +1,30 @@
+{% block table_pagination %}
+    <div class="pagination">
+
+        <div class="pagination-first {% if currentPage != 1 %}visible{% endif %}"
+             data-page-id="1"
+        >&lt;&lt;</div>
+
+        {% set visibleFrom = max(1,currentPage-2) %}
+        {% set visibleTo = min(availablePages,currentPage+2) %}
+
+        {% if currentPage < 3 %}
+            {% set visibleTo = min(availablePages, 5) %}
+        {% elseif currentPage > availablePages-2 %}
+            {% set visibleFrom = max(1, availablePages-4) %}
+        {% endif %}
+
+        {% for i in 1..availablePages %}
+            <div class="pagination-page {% if i == currentPage %}active{% endif %} {% if i >= visibleFrom and i <= visibleTo %}visible{% endif %}"
+                data-page-id="{{ i }}"
+            >
+                {{ i }}
+            </div>
+        {% endfor %}
+
+        <div class="pagination-last {% if currentPage != availablePages %}visible{% endif %}"
+             data-page-id="{{ availablePages }}"
+        >&gt;&gt;</div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+.pagination {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	padding: 1rem;
+
+	.pagination-first,
+	.pagination-last,
+	.pagination-page {
+		height: 3rem;
+		min-width: 3rem;
+		padding: 0.5rem;
+		margin-right: 0.5rem;
+		justify-content: center;
+		align-items: center;
+		background-color: $gray-200;
+		cursor: pointer;
+
+		&.active {
+			background-color: $aqua;
+			color: $gray-200;
+		}
+
+		&.visible {
+			display: flex;
+			opacity: 1;
+		}
+	}
+
+	.pagination-page {
+		display: none;
+	}
+
+	.pagination-first,
+	.pagination-last {
+		opacity: 0;
+	}
+}

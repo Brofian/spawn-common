@@ -20,12 +20,18 @@ table.table-listing {
 			&.row-selection-column {
 				text-align: center;
 			}
+
+			&[data-data-type=bool] {
+				max-width: min-content;
+				text-align: center;
+			}
 		}
 	}
 
 	tbody {
 		tr {
 			background-color: $gray-300;
+			display: none;
 
 			&:nth-of-type(2n) {
 				background-color: $gray-350;
@@ -33,6 +39,10 @@ table.table-listing {
 
 			&:hover {
 				background-color: $gray-400;
+			}
+
+			&.visible {
+				display: table-row;
 			}
 
 			td {
@@ -46,7 +56,9 @@ table.table-listing {
 					max-width: 20rem;
 				}
 
+				&[data-data-type=bool],
 				&.row-selection-column {
+					max-width: min-content;
 					text-align: center;
 				}
 			}
