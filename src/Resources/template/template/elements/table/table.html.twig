@@ -1,5 +1,5 @@
 {% block table %}
-    <table class="table-listing js-scalable"
+    <table class="{% block table_element_class %}table-listing js-table-listing js-scalable{% endblock %}"
         {% if configuration.pagination.itemsPerPage %}
             data-items-per-page="{{ configuration.pagination.itemsPerPage }}"
         {% endif %}
@@ -10,10 +10,10 @@
             data-use-pagination="0"
         {% endif %}
     >
-
-        {% if configuration.tableHeaders %}
-            {% block table_header %}
-                <thead>
+        {% block table_inner %}
+            {% if configuration.tableHeaders %}
+                {% block table_header %}
+                    <thead>
                     <tr>
 
                         {% block table_header_row_selection %}
@@ -35,64 +35,67 @@
                         {% endfor %}
 
                     </tr>
-                </thead>
-            {% endblock %}
-        {% endif %}
+                    </thead>
+                {% endblock %}
+            {% endif %}
 
 
-        {% block table_body %}
-            <tbody>
+            {% block table_body %}
+                <tbody>
                 {% block table_body_inner %}
 
                     {% for rowData in configuration.tableRows %}
 
                         <tr>
-                        {% block table_body_row %}
+                            {% block table_body_row %}
 
-
-                            {% block table_body_row_selection %}
-                                {% if configuration.showRowSelection %}
-                                    <td class="row-selection-column">
-                                        {% set randId = "row_select_"~random(0,99999999) %}
-                                        <input type="checkbox" class="toggleRow" id="{{ randId }}"/>
-                                        <label for="{{ randId }}"></label>
-                                    </td>
-                                {% endif %}
-                            {% endblock %}
-
-                            {% set colIndex = 0 %}
-                            {% for data in rowData %}
-                                <td data-data-type="{{ configuration.columnTypes[colIndex] }}">
-                                {% block table_body_column %}
-
-                                    {% if configuration.columnTypes[colIndex] == 'datetime' %}
-                                        <span>{{ data|date(constant('SpawnCore\\Defaults\\Defaults::DATE_TIME_STORAGE_FORMAT')) }}</span>
-                                    {% elseif configuration.columnTypes[colIndex] == 'bool' %}
-                                        {% set randId = "row_select_"~random(0,99999999) %}
-                                        <input type="checkbox" id="{{ randId }}" {% if data %}checked="checked"{% endif %}/>
-                                        <label for="{{ randId }}"></label>
-                                    {% else %}
-                                        <span>{{ data|default('/') }}</span>
+                                {% block table_body_row_selection %}
+                                    {% if configuration.showRowSelection %}
+                                        <td class="row-selection-column">
+                                            {% set randId = "row_select_"~random(0,99999999) %}
+                                            <input type="checkbox" class="toggleRow" id="{{ randId }}"/>
+                                            <label for="{{ randId }}"></label>
+                                        </td>
                                     {% endif %}
-
                                 {% endblock %}
-                                </td>
 
-                                {% set colIndex = colIndex + 1 %}
-                            {% endfor %}
-                        {% endblock %}
+                                {% set colIndex = 0 %}
+                                {% for data in rowData %}
+                                    <td data-data-type="{{ configuration.columnTypes[colIndex] }}">
+                                        {% block table_body_column %}
+
+                                            {% if configuration.columnTypes[colIndex] == 'datetime' %}
+                                                <span>{{ data|date(constant('SpawnCore\\Defaults\\Defaults::DATE_TIME_STORAGE_FORMAT')) }}</span>
+                                            {% elseif configuration.columnTypes[colIndex] == 'bool' %}
+                                                {% set randId = "row_bool_"~random(0,99999999) %}
+                                                <input type="checkbox" id="{{ randId }}" {% if data %}checked="checked"{% endif %}/>
+                                                <label for="{{ randId }}"></label>
+                                            {% else %}
+                                                <span>{{ data|default('-') }}</span>
+                                            {% endif %}
+
+                                        {% endblock %}
+                                    </td>
+
+                                    {% set colIndex = colIndex + 1 %}
+                                {% endfor %}
+                            {% endblock %}
                         </tr>
 
                     {% endfor %}
                 {% endblock %}
-            </tbody>
+                </tbody>
+            {% endblock %}
         {% endblock %}
     </table>
+
+    {% block table_after %}{% endblock %}
+
 
     {% block table_pagination_container %}
         {% if not configuration.pagination.hide %}
             {% include "template/elements/table/pagination.html.twig" with {
-                availablePages: ((configuration.tableRows|length) / (configuration.itemsPerPage|default(10)))|round(0,'ceil'),
+                availablePages: ((configuration.tableRows|length) / (configuration.itemsPerPage|default(10)))|round(0,'ceil') ?: 1,
                 currentPage: configuration.itemsPerPage|default(1)
             } only %}
         {% endif %}

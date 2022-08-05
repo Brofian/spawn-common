@@ -18,6 +18,7 @@ export default class TableListingComponent extends Plugin {
         if(toggleAllBtn) {
             toggleAllBtn.addEventListener('change', this.onToggleAllRowSelections.bind(this));
         }
+        this.tbody = this._element.querySelector('tbody');
 
         this.initPagination();
     }
@@ -53,8 +54,8 @@ export default class TableListingComponent extends Plugin {
         if(this.options.usePagination != 0) {
             this.updateTableItemVisibility();
 
-            this.pagination = this._element.nextElementSibling;
-            if(!this.pagination || !this.pagination.classList.contains('pagination')) {
+            this.pagination = this._element.parentElement.querySelector('.pagination');
+            if(!this.pagination) {
                 console.error('no valid pagination element found for table');
                 return;
             }
