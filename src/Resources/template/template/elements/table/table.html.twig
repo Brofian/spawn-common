@@ -47,6 +47,7 @@
                     {% for rowData in configuration.tableRows %}
 
                         <tr>
+
                             {% block table_body_row %}
 
                                 {% block table_body_row_selection %}
@@ -61,9 +62,9 @@
 
                                 {% set colIndex = 0 %}
                                 {% for data in rowData %}
+
                                     <td data-data-type="{{ configuration.columnTypes[colIndex] }}">
                                         {% block table_body_column %}
-
                                             {% if configuration.columnTypes[colIndex] == 'datetime' %}
                                                 <span>{{ data|date(constant('SpawnCore\\Defaults\\Defaults::DATE_TIME_STORAGE_FORMAT')) }}</span>
                                             {% elseif configuration.columnTypes[colIndex] == 'bool' %}
@@ -71,10 +72,23 @@
                                                 <input type="checkbox" id="{{ randId }}" {% if data %}checked="checked"{% endif %}/>
                                                 <label for="{{ randId }}"></label>
                                             {% else %}
-                                                <span>{{ data|default('-') }}</span>
-                                            {% endif %}
 
+                                                {% set link = configuration.columnLinks[configuration.tableHeaders[colIndex]]|default(0) %}
+                                                {% if link %}
+                                                    {% set partsData = [] %}
+                                                    {% for part in link.parts %}
+                                                        {% set partsData = partsData|merge([rowData[part]]|default('-')) %}
+                                                    {% endfor %}
+                                                    <a href="{{ seo_url(link.route, partsData) }}">
+                                                {% endif %}
+
+                                                <span>{{ data|default('-') }}</span>
+
+                                                {% if link %}</a>{% endif %}
+
+                                            {% endif %}
                                         {% endblock %}
+
                                     </td>
 
                                     {% set colIndex = colIndex + 1 %}

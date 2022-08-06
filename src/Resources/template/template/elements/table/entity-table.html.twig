@@ -1,26 +1,58 @@
 {% extends "template/elements/table/table.html.twig" %}
 
-{% block table_element_class %}js-entity-listing table-listing js-scalable{% endblock %}
+{% block table %}
+    <table class="js-entity-listing table-listing js-scalable"
+        {% if configuration.pagination.itemsPerPage %}
+            data-items-per-page="{{ configuration.pagination.itemsPerPage }}"
+        {% endif %}
+        {% if configuration.pagination.currentPage %}
+            data-current-page="{{ configuration.pagination.currentPage }}"
+        {% endif %}
+        {% if configuration.pagination.hide %}
+            data-use-pagination="0"
+        {% endif %}
+        {% if configuration.entityName %}
+            data-entity-name="{{ configuration.entityName }}"
+        {% endif %}
+    >
+        {% block table_inner %}
+            {{ parent() }}
+        {% endblock %}
+
+    </table>
+
+    {% block table_after %}
+        {{ parent() }}
+
+        <template id="entity-row">
+
+            <tr>
+                {% if configuration.showRowSelection %}
+                    <td class="row-selection-column">
+                        <input type="checkbox" class="toggleRow" id=[[rowSelectionId]]"/>
+                        <label for="[[rowSelectionId]]"></label>
+                    </td>
+                {% endif %}
+
+                {% set colIndex = 0 %}
+                {% for data in configuration.tableHeaders %}
+                    <td data-data-type="{{ configuration.columnTypes[colIndex] }}"
+                        {% if configuration.columnLinks[data] %}
+                            data-href-template="{{ seo_url(configuration.columnLinks[data].route, ['{}']) }}"
+                            data-href-template-parts="{{ configuration.columnLinks[data].parts|json_encode() }}"
+                        {% endif %}
+                    >{{ data }}</td>
+                    {% set colIndex = colIndex + 1 %}
+                {% endfor %}
+            </tr>
+
+        </template>
+    {% endblock %}
+
+    {% block table_pagination_container %}
+        {{ parent() }}
+    {% endblock %}
+
+{% endblock %}
 
 {% block table_body_inner %}{% endblock %}
-
-{% block table_after %}
-    <template id="entity-row">
-
-        <tr>
-             {% if configuration.showRowSelection %}
-                <td class="row-selection-column">
-                    <input type="checkbox" class="toggleRow" id=[[rowSelectionId]]"/>
-                    <label for="[[rowSelectionId]]"></label>
-                </td>
-            {% endif %}
-
-            {% set colIndex = 0 %}
-            {% for data in configuration.tableHeaders %}
-                <td data-data-type="{{ configuration.columnTypes[colIndex] }}">{{ data }}</td>
-                {% set colIndex = colIndex + 1 %}
-            {% endfor %}
-        </tr>
-
-    </template>
-{% endblock %}

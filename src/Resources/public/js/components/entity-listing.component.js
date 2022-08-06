@@ -1,6 +1,7 @@
 import TableListingComponent from "./table-listing.component";
 import EntityApiFunction from "../abstract/entity-api.function";
 import FlashHintFunction from "../abstract/flash-hint.function";
+import EventManager from "EventManager";
 
 /**
  <table class="entity-listing">[...]</table>
@@ -13,13 +14,13 @@ export default class EntityListingComponent extends TableListingComponent {
         usePagination: 1,
         itemsPerPage: 10,
         currentPage: 1,
-        entityType: 'modules'
+        entityName: 'modules'
     }
 
     init() {
         super.init();
 
-        EntityApiFunction.search(this.options.entityType, this.onSearchResult.bind(this));
+        EntityApiFunction.search(this.options.entityName, this.onSearchResult.bind(this));
         this.templateElement = document.getElementById('entity-row');
     }
 
@@ -40,6 +41,8 @@ export default class EntityListingComponent extends TableListingComponent {
         for(let rowData of rowsData) {
             this.tbody.appendChild(this.createNewRow(rowData));
         }
+
+        EventManager.publish('pluginmanager.startInitializeScope', [this.tbody]);
     }
 
     createNewRow(data) {
@@ -63,19 +66,34 @@ export default class EntityListingComponent extends TableListingComponent {
             let type = column.dataset.dataType;
             let value = data[column.innerText] ?? '-';
             column.innerText = '';
+
+            let columnValue = '';
             switch(type) {
                 case 'datetime':
-                    column.innerHTML = '<span>'+value.date+'</span>';
+                    columnValue = '<span>'+value.date+'</span>';
                     break;
                 case 'bool':
                     let randId = 'row_bool_'+Math.floor(Math.random()*9999999);
-                    column.innerHTML =  `<input type="checkbox" id="${randId}" ${value ? 'checked="checked"' : ''}/>` +
-                                        `<label for="${randId}"></label>`;
+                    columnValue =  `<input type="checkbox" id="${randId}" ${value ? 'checked="checked"' : ''}/>` +
+                                    `<label for="${randId}"></label>`;
                     break;
                 default:
-                    column.innerHTML = '<span>'+value+'</span>';
+                    columnValue = '<span>'+value+'</span>';
+
+                    if(column.dataset.hrefTemplate) {
+                        let href = column.dataset.hrefTemplate;
+
+                        let partNames = JSON.parse(column.dataset.hrefTemplateParts);
+                        for(let part of partNames) {
+                            href = href.replace(/{}/, data[part]);
+                        }
+
+                        columnValue = `<a href="${href}">` + columnValue + '</a>';
+                    }
                     break;
             }
+
+            column.innerHTML = columnValue;
         }
 
         return row;

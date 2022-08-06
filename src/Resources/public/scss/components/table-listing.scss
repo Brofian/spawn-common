@@ -19,6 +19,7 @@ table.table-listing {
 
 			&.row-selection-column {
 				text-align: center;
+				width: 3rem;
 			}
 
 			&[data-data-type=bool] {
@@ -60,6 +61,7 @@ table.table-listing {
 				&.row-selection-column {
 					max-width: min-content;
 					text-align: center;
+					width: 3rem;
 				}
 			}
 		}

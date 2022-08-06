@@ -9,15 +9,32 @@ class TableDefinition {
     public const TYPE_BOOL = 'bool';
 
     protected array $columns = [];
+    protected array $columnLinks = [];
     protected array $rows = [];
 
-    public function addColumn(string $headerSnippetName, string $columnType): void {
-        $this->columns[$headerSnippetName] = $columnType;
+    public function addColumn(string $columnName, string $columnType): void {
+        $this->columns[$columnName] = $columnType;
     }
 
     public function addColumns(array $columns): void {
         foreach($columns as $columnName => $columnType) {
             $this->addColumn($columnName, $columnType);
+        }
+    }
+
+    /**
+     * configuration should be an array with a string, called "route", and a nested array, called "parts", which contains the columns
+     * @param string $columnName
+     * @param array<string,array> $configuration
+     * @return void
+     */
+    public function addColumnLink(string $columnName, array $configuration) {
+        $this->columnLinks[$columnName] = $configuration;
+    }
+
+    public function addColumnLinks(array $columnLinks) {
+        foreach($columnLinks as $columnName => $columnLink) {
+            $this->addColumnLink($columnName, $columnLink);
         }
     }
 
@@ -41,6 +58,10 @@ class TableDefinition {
 
     public function getRows(): array {
         return $this->rows;
+    }
+
+    public function getColumnLinks(): array {
+        return $this->columnLinks;
     }
 
 }
