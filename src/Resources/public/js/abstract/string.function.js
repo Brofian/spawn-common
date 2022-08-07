@@ -1,8 +1,8 @@
 export default class StringFunction {
 
     static trim(value, charlist = ' \n\r\t') {
-        value = String.trimRight(value, charlist);
-        value = String.trimLeft(value, charlist);
+        value = StringFunction.trimRight(value, charlist);
+        value = StringFunction.trimLeft(value, charlist);
 
         return value;
     }

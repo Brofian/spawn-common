@@ -18,6 +18,11 @@ export default class TableListingComponent extends Plugin {
         if(toggleAllBtn) {
             toggleAllBtn.addEventListener('change', this.onToggleAllRowSelections.bind(this));
         }
+
+        for(let t of this._element.querySelectorAll('tbody tr input.toggleRow[type=checkbox]')) {
+            t.addEventListener('change', this.onRowToggled.bind(this));
+        }
+
         this.tbody = this._element.querySelector('tbody');
 
         this.initPagination();
@@ -27,6 +32,19 @@ export default class TableListingComponent extends Plugin {
         let selectors = this._element.querySelectorAll('tbody tr.visible input.toggleRow[type=checkbox]');
         for(let s of selectors) {
             s.checked = event.target.checked;
+        }
+        this.onRowToggled();
+    }
+
+    onRowToggled() {
+        let activeSelector = this._element.querySelector('tbody tr.visible input.toggleRow[type=checkbox]:checked');
+
+        let actionBar = this._element.parentElement.querySelector('.row-selection-actionbar');
+        if(activeSelector) {
+            actionBar.classList.add('visible');
+        }
+        else {
+            actionBar.classList.remove('visible');
         }
     }
 

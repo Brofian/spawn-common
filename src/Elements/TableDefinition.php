@@ -7,6 +7,7 @@ class TableDefinition {
     public const TYPE_TEXT = 'text';
     public const TYPE_DATETIME = 'datetime';
     public const TYPE_BOOL = 'bool';
+    public const TYPE_HIDDEN = 'hidden';
 
     protected array $columns = [];
     protected array $columnLinks = [];
@@ -39,7 +40,7 @@ class TableDefinition {
     }
 
     public function addRow(array $rowData): void {
-        $this->rows[] = array_values($rowData);
+        $this->rows[] = $rowData;
     }
 
     public function addRows(array $rows): void {

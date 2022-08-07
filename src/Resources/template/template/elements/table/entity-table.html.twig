@@ -2,15 +2,13 @@
 
 {% block table %}
     <table class="js-entity-listing table-listing js-scalable"
-        {% if configuration.pagination.itemsPerPage %}
-            data-items-per-page="{{ configuration.pagination.itemsPerPage }}"
-        {% endif %}
-        {% if configuration.pagination.currentPage %}
-            data-current-page="{{ configuration.pagination.currentPage }}"
-        {% endif %}
-        {% if configuration.pagination.hide %}
-            data-use-pagination="0"
-        {% endif %}
+        {% block table_pagination_config %}
+            {{ parent() }}
+        {% endblock %}
+        {% block table_draggable_config %}
+            {{ parent() }}
+        {% endblock %}
+
         {% if configuration.entityName %}
             data-entity-name="{{ configuration.entityName }}"
         {% endif %}
@@ -36,7 +34,7 @@
 
                 {% set colIndex = 0 %}
                 {% for data in configuration.tableHeaders %}
-                    <td data-data-type="{{ configuration.columnTypes[colIndex] }}"
+                    <td data-key="{{ data }}" data-data-type="{{ configuration.columnTypes[colIndex] }}"
                         {% if configuration.columnLinks[data] %}
                             data-href-template="{{ seo_url(configuration.columnLinks[data].route, ['{}']) }}"
                             data-href-template-parts="{{ configuration.columnLinks[data].parts|json_encode() }}"

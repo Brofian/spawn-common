@@ -1,14 +1,22 @@
 {% block table %}
-    <table class="{% block table_element_class %}table-listing js-table-listing js-scalable{% endblock %}"
-        {% if configuration.pagination.itemsPerPage %}
-            data-items-per-page="{{ configuration.pagination.itemsPerPage }}"
-        {% endif %}
-        {% if configuration.pagination.currentPage %}
-            data-current-page="{{ configuration.pagination.currentPage }}"
-        {% endif %}
-        {% if configuration.pagination.hide %}
-            data-use-pagination="0"
-        {% endif %}
+    <table class="{% block table_element_class %}table-listing js-table-listing{% endblock %} js-scalable"
+        {% block table_pagination_config %}
+            {% if configuration.pagination.itemsPerPage %}
+                data-items-per-page="{{ configuration.pagination.itemsPerPage }}"
+            {% endif %}
+            {% if configuration.pagination.currentPage %}
+                data-current-page="{{ configuration.pagination.currentPage }}"
+            {% endif %}
+            {% if configuration.pagination.hide %}
+                data-use-pagination="0"
+            {% endif %}
+        {% endblock %}
+        {% block table_draggable_config %}
+            {% if configuration.isPositioned %}
+                data-draggable-row-entity="{{ configuration.entityName }}"
+                data-id-column="{{ configuration.idColumn }}"
+            {% endif %}
+        {% endblock %}
     >
         {% block table_inner %}
             {% if configuration.tableHeaders %}
@@ -24,12 +32,20 @@
                                     <label for="{{ randId }}"></label>
                                 </th>
                             {% endif %}
+
+                            {% if configuration.isPositioned %}
+                                <th></th>
+                            {% endif %}
                         {% endblock %}
 
                         {% set colIndex = 0 %}
                         {% for headerName in configuration.tableHeaders %}
                             {% block table_header_column %}
-                                <th data-data-type="{{ configuration.columnTypes[colIndex] }}">{{ headerName }}</th>
+                                <th data-data-type="{{ configuration.columnTypes[colIndex] }}"
+                                    {% if configuration.columnTypes[colIndex] == 'hidden' %}style="display: none"{% endif %}
+                                >
+                                    {{ headerName }}
+                                </th>
                             {% endblock %}
                             {% set colIndex = colIndex + 1 %}
                         {% endfor %}
@@ -58,12 +74,18 @@
                                             <label for="{{ randId }}"></label>
                                         </td>
                                     {% endif %}
+
+                                    {% if configuration.isPositioned %}
+                                        <td class="row-position-column">
+                                            {{ 'apps-grid-icon'|icon('SpawnCommon') }}
+                                        </td>
+                                    {% endif %}
                                 {% endblock %}
 
                                 {% set colIndex = 0 %}
-                                {% for data in rowData %}
+                                {% for key, data in rowData %}
 
-                                    <td data-data-type="{{ configuration.columnTypes[colIndex] }}">
+                                    <td data-key="{{ key }}" data-data-type="{{ configuration.columnTypes[colIndex] }}" {% if configuration.columnTypes[colIndex] == 'hidden' %}style="display: none"{% endif %}>
                                         {% block table_body_column %}
                                             {% if configuration.columnTypes[colIndex] == 'datetime' %}
                                                 <span>{{ data|date(constant('SpawnCore\\Defaults\\Defaults::DATE_TIME_STORAGE_FORMAT')) }}</span>
@@ -103,7 +125,11 @@
         {% endblock %}
     </table>
 
-    {% block table_after %}{% endblock %}
+    {% block table_after %}
+        <div class="row-selection-actionbar">
+            <span>helloworld</span>
+        </div>
+    {% endblock %}
 
 
     {% block table_pagination_container %}

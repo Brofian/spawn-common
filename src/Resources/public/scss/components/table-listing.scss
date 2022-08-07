@@ -46,6 +46,33 @@ table.table-listing {
 				display: table-row;
 			}
 
+			&.js-fake-table-row {
+				position: relative;
+				background-color: transparent !important;
+
+				&::after {
+					content: attr(data-hover-text);
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: calc(100% - 0.5rem);
+					height: calc(100% - 0.5rem);
+					border: 2px solid $gray-100;
+					color: $gray-100;
+					box-sizing: border-box;
+					margin: 0.25rem;
+					border-radius: 0.5rem;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+
+				&.dragover::after {
+					color: $aqua;
+					border-color: $aqua;
+				}
+			}
+
 			td {
 				padding: 0.5rem;
 				text-align: left;
@@ -67,4 +94,13 @@ table.table-listing {
 		}
 	}
 
+	& ~ .row-selection-actionbar {
+		padding: 0.5rem 1rem;
+		background-color: $gray-300;
+		display: none;
+
+		&.visible {
+			display: block;
+		}
+	}
 }

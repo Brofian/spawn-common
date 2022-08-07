@@ -14,7 +14,7 @@ export default class EntityListingComponent extends TableListingComponent {
         usePagination: 1,
         itemsPerPage: 10,
         currentPage: 1,
-        entityName: 'modules'
+        entityName: ''
     }
 
     init() {
@@ -55,8 +55,10 @@ export default class EntityListingComponent extends TableListingComponent {
         let rowSelection = row.querySelector('.row-selection-column');
         if(rowSelection) {
             let rand = Math.floor(Math.random()*9999999);
-            rowSelection.querySelector('input').id = 'row_select_'+rand;
-            rowSelection.querySelector('label').for = 'row_select_'+rand;
+            let selectionInput = rowSelection.querySelector('input');
+                selectionInput.id = 'row_select_'+rand;
+                selectionInput.addEventListener('change', this.onRowToggled.bind(this));
+            rowSelection.querySelector('label').setAttribute('for', 'row_select_'+rand);
         }
 
         // data colums
@@ -66,6 +68,11 @@ export default class EntityListingComponent extends TableListingComponent {
             let type = column.dataset.dataType;
             let value = data[column.innerText] ?? '-';
             column.innerText = '';
+
+            if(type === 'hidden') {
+                column.style.display = 'none';
+            }
+
 
             let columnValue = '';
             switch(type) {
