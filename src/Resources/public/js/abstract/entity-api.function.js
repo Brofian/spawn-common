@@ -4,7 +4,7 @@ export default class EntityApiFunction {
 
     static url = '/backend/api/v1/{entityName}/';
 
-    static search(entityName, callback, filter = {}) {
+    static search(entityName, callback, filter = []) {
         this.__sendApiRequest(entityName, 'GET', callback, filter);
     }
 
@@ -50,12 +50,14 @@ export default class EntityApiFunction {
             return;
         }
 
-        let data = {};
+        let data = response;
         try {
-            data = JSON.parse(response);
+            if(typeof data !== 'object') {
+                data = JSON.parse(response);
+            }
         }
         catch (error) {
-            console.error('Recieved invalid data from API endpoint request');
+            console.error('Recieved invalid data from API endpoint request: ' , error, response);
             callback({
                 success: false
             });

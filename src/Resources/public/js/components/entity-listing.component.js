@@ -14,13 +14,14 @@ export default class EntityListingComponent extends TableListingComponent {
         usePagination: 1,
         itemsPerPage: 10,
         currentPage: 1,
-        entityName: ''
+        entityName: '',
+        entityCriteria: '{}'
     }
 
     init() {
         super.init();
 
-        EntityApiFunction.search(this.options.entityName, this.onSearchResult.bind(this));
+        EntityApiFunction.search(this.options.entityName, this.onSearchResult.bind(this), JSON.parse(this.options.entityCriteria));
         this.templateElement = document.getElementById('entity-row');
     }
 
@@ -42,7 +43,7 @@ export default class EntityListingComponent extends TableListingComponent {
             this.tbody.appendChild(this.createNewRow(rowData));
         }
 
-        EventManager.publish('pluginmanager.startInitializeScope', [this.tbody]);
+        EventManager.publish('pluginmanager.startInitializeScope', [this._element.parentElement]);
     }
 
     createNewRow(data) {

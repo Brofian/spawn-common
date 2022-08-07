@@ -12,11 +12,14 @@
         {% if configuration.entityName %}
             data-entity-name="{{ configuration.entityName }}"
         {% endif %}
+
+        {% if configuration.criteria %}
+            data-entity-criteria="{{ configuration.criteria|json_encode }}"
+        {% endif %}
     >
         {% block table_inner %}
             {{ parent() }}
         {% endblock %}
-
     </table>
 
     {% block table_after %}
@@ -29,6 +32,12 @@
                     <td class="row-selection-column">
                         <input type="checkbox" class="toggleRow" id=[[rowSelectionId]]"/>
                         <label for="[[rowSelectionId]]"></label>
+                    </td>
+                {% endif %}
+
+                {% if configuration.isPositioned %}
+                    <td class="row-position-column">
+                        {{ 'apps-grid-icon'|icon('SpawnCommon') }}
                     </td>
                 {% endif %}
 

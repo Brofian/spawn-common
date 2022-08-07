@@ -16,14 +16,19 @@ export default class DraggableTableComponent extends Plugin {
     }
 
     init() {
-        this.rows = this._element.querySelectorAll('tbody tr td.row-position-column');
-        for(let row of this.rows) {
+        let rows = this._element.querySelectorAll('tbody tr td.row-position-column:not(.js-drag-processed)');
+        for(let row of rows) {
+            row.classList.add('js-drag-processed');
             row.addEventListener('mouseenter', this.onDragElementHover.bind(this));
             row.addEventListener('mouseleave', this.onDragElementLeave.bind(this));
             row.parentElement.addEventListener('dragstart', this.onDragStart.bind(this));
             row.parentElement.addEventListener('dragend', this.onDragEnd.bind(this));
             row.parentElement.addEventListener('dragover', this.onDragOver.bind(this, row.parentElement));
         }
+    }
+
+    onPluginElementUpdate() {
+        this.init();
     }
 
     afterCompleteDragDrop() {
@@ -41,7 +46,7 @@ export default class DraggableTableComponent extends Plugin {
     }
 
     onUpsertComplete(result) {
-        console.log('upsert complete', result);
+        //console.log('upsert complete', result);
     }
 
     onDragStart(event) {
