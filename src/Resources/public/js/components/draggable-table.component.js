@@ -34,15 +34,20 @@ export default class DraggableTableComponent extends Plugin {
     afterCompleteDragDrop() {
         let idsElements = this._element.querySelectorAll(`tbody tr td[data-key=${this.options.idColumn}]`);
 
-        let data = [];
+        let data = {};
+        let counter = 0;
         for(let el of idsElements) {
-            data.push({
+            data[counter] = {
                 id: StringFunction.trim(el.textContent),
-                position: data.length
-            });
+                position: counter++
+            };
         }
 
-        EntityApiFunction.upsert(this.options.draggableRowEntity, data, this.onUpsertComplete.bind(this));
+        let payload = {
+            data: data
+        };
+
+        EntityApiFunction.upsert(this.options.draggableRowEntity, this.onUpsertComplete.bind(this), payload);
     }
 
     onUpsertComplete(result) {

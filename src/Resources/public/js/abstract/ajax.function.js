@@ -5,7 +5,7 @@ export default class AjaxFunction {
         return $.ajax({
             url: url,
             type: method,
-            data: data,
+            data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
             dataType: "json",
             context: context,

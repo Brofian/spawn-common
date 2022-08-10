@@ -4,15 +4,19 @@ export default class EntityApiFunction {
 
     static url = '/backend/api/v1/{entityName}/';
 
-    static search(entityName, callback, filter = []) {
-        this.__sendApiRequest(entityName, 'GET', callback, filter);
+    static search(entityName, callback, filter = {}) {
+        filter['action'] = 'search';
+        console.log(filter);
+        this.__sendApiRequest(entityName, 'POST', callback, filter);
     }
 
     static delete(entityName, callback, filter = {}) {
-        this.__sendApiRequest(entityName, 'DELETE', callback, filter);
+        filter['action'] = 'delete';
+        this.__sendApiRequest(entityName, 'POST', callback, filter);
     }
 
-    static upsert(entityName, data, callback) {
+    static upsert(entityName, callback, data) {
+        data['action'] = 'upsert';
         this.__sendApiRequest(entityName, 'POST', callback, data);
     }
 
